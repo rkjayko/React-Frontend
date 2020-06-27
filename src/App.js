@@ -64,7 +64,7 @@ class App extends Component {
       <div style={{backgroundColor: '#F1F3FB'}} className="col-12 py-3 px-0 mx-0">   
       <div className="row pl-5">
           <h2 style={{color: '#1A1053', fontSize: 30}}>PNC 2.0</h2>
-          <span style={{fontSize: 25}} className="text-muted ml-3">Aplicacion Hoja de vida</span>
+          <span style={{fontSize: 25}} className="text-muted ml-3">Aplicacion Hojaa de vida</span>
         </div>
         <div>
         <NavBar/>

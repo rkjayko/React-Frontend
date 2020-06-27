@@ -82,28 +82,28 @@ const SignUp = () => {
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid container spacing={2}>
                     <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                fullWidth
-                                id="announcementName"
-                                label="Nombre de la convocatoria"
-                                name="announcementName"
-                                autoFocus
-                            />
-                        </Grid>                        
-                        <Grid item xs={12} sm={6}>
                         <TextField
-          id="outlined-select-currency-native"
-          select
-          label="Aspirante a"
-          value={currency}
-          onChange={handleChange}
-          SelectProps={{
-            native: true,
-          }}
-          helperText="Seleccione el lenguaje"
-          variant="outlined"
-        >
+                            variant="outlined"
+                            fullWidth
+                            id="announcementName"
+                            label="Nombre de la convocatoria"
+                            name="announcementName"
+                            autoFocus
+                        />
+                    </Grid>                        
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            id="outlined-select-currency-native"
+                            select
+                            label="Aspirante a"
+                            value={currency}
+                            onChange={handleChange}
+                            SelectProps={{
+                            native: true,
+                            }}
+                            helperText="Seleccione el lenguaje"
+                        variant="outlined"
+                        >
           {currencies.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
@@ -132,34 +132,28 @@ const SignUp = () => {
                             />
                         </Grid>   
                         <Grid item xs={12} sm={6}>
-                        <KeyboardDatePicker
-          disableToolbar
-          variant="inline"
-          format="MM/dd/yyyy"
-          margin="normal"
-          id="date-picker-inline"
-          label="Fecha inicial de la convocatoria"
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
+                        <TextField
+                            id="date"
+                            label="Inicio Convocatoria"
+                            type="date"
+                            defaultValue="2017-05-24"
+                            className={classes.textField}
+                            InputLabelProps={{
+                            shrink: true,
+                            }}
+                        />
                         </Grid>    
                         <Grid item xs={12} sm={6}>
-                        <KeyboardDatePicker
-          disableToolbar
-          variant="inline"
-          format="MM/dd/yyyy"
-          margin="normal"
-          id="date-picker-inline"
-          label="Fecha final de la convocatoria"
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
+                        <TextField
+                            id="date"
+                            label="Final Convocatoria"
+                            type="date"
+                            defaultValue="2017-05-24"
+                            className={classes.textField}
+                            InputLabelProps={{
+                            shrink: true,
+                            }}
+                        />
                         </Grid>                                                                     
                     </Grid>
                     <Button

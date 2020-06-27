@@ -38,9 +38,8 @@ class AddAnnouncementComponent extends Component{
     render() {
         return(
             <div>
-                <Typography variant="h4" style={style}>Añadir usuario</Typography>
                 <SignUp/>
-    </div>
+            </div>
         );
     }
 }

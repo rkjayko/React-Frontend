@@ -4,15 +4,16 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Button from '@material-ui/core/Button';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Card from '../card/card';
 import AnnouncementService from "../../services/announcement.service";
-
+import { Alert, AlertTitle } from '@material-ui/lab';
 class ListAnnouncementComponent extends Component {
+
+
 
     constructor(props) {
         super(props)
@@ -25,14 +26,33 @@ class ListAnnouncementComponent extends Component {
         this.addAnnouncement = this.addAnnouncement.bind(this);
         this.reloadAnnouncementList = this.reloadAnnouncementList.bind(this);
         this.aggregatedCard = React.createRef();
-        this.activeCard = React.createRef();        
+        this.activeCard = React.createRef(); 
+        this.recoveredCard = React.createRef();       
     }
 
     componentDidMount() {
         this.reloadAnnouncementList();
-        this.aggregatedCard.current.changeValue(2);
-        this.activeCard.current.changeValue(1);        
     }
+
+    getSummaryStatusOpen(arrayStatus){
+        var summary = 0;
+        for (var count in arrayStatus){
+            if (arrayStatus[count].status === 'OPEN') {
+                summary = summary + 1;
+            }
+        }
+        return summary;
+    }
+
+    getSummaryStatusClosed(arrayStatus){
+        var summary = 0;
+        for (var count in arrayStatus){
+            if (arrayStatus[count].status === 'CLOSED') {
+                summary = summary + 1;
+            }
+        }
+        return summary;
+    }   
 
     reloadAnnouncementList() {
         AnnouncementService.fetchAnnouncements()
@@ -40,8 +60,9 @@ class ListAnnouncementComponent extends Component {
             this.setState({
               announcements: response.data,
             });
-            console.log(response.data);
-            console.log(this.state)
+            this.aggregatedCard.current.changeValue(this.state.announcements.length);
+            this.activeCard.current.changeValue(this.getSummaryStatusOpen(this.state.announcements)); 
+            this.recoveredCard.current.changeValue(this.getSummaryStatusClosed(this.state.announcements));               
           })
           .catch((e) => {
             console.log(e);
@@ -49,7 +70,7 @@ class ListAnnouncementComponent extends Component {
     }
 
     deleteAnnouncement(announcementId) {
-        AnnouncementService.deleteAnnouncements(announcementId)
+        AnnouncementService.deleteAnnouncement(announcementId)
            .then(res => {
                this.setState({message : 'Announcement deleted successfully.'});
                this.setState({announcements: this.state.announcements.filter(announcement => announcement.id !== announcementId)});
@@ -65,7 +86,7 @@ class ListAnnouncementComponent extends Component {
         window.localStorage.removeItem("announcementId");
         this.props.history.push('/add-announcement');
     }
-
+    
     render() {
         return (
             <div>
@@ -88,15 +109,22 @@ class ListAnnouncementComponent extends Component {
           color='#1CB142'/>
           <Card 
           ref={this.deathsCard}
-          title="Ultima Convocatoria" 
+          title="Ultima convocatoria" 
           value={0}
           color='#6236FF'/>
-        </div>                               
-                <Typography variant="h4" style={style}>Detalles de convocatoria</Typography>
-                <Button variant="contained" color="primary" onClick={() => this.addAnnouncement()}>
-                    Añadir convocatoria
-                </Button>
+        </div>
 
+        {this.state.announcements.length > 0 ?       
+            <Alert severity="success">
+                <AlertTitle>Exitoso</AlertTitle>
+                Se ha cargado los registros correctamente
+             </Alert> :
+            <Alert severity="error">
+            <AlertTitle>Error</AlertTitle>
+                'No existen registros asociados/No se ha cargado la base de datos'                    
+            </Alert>         
+        }       
+        <Typography variant="h4" style={style}>Detalles de convocatoria</Typography>
                 <Table>
                     <TableHead>
                         <TableRow>

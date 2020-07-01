@@ -12,7 +12,7 @@ const AppRouter = () => {
                         <Route path="/" exact component={ListAnnouncementComponent} />
                         <Route path="/announcements" component={ListAnnouncementComponent} />
                         <Route path="/add" component={AddAnnouncementComponent} />
-                        <Route path="/edit" component={EditAnnouncementComponent} />
+                        <Route path="/edit-announcement" component={EditAnnouncementComponent} />
                     </Switch>
             </Router>
         </div>

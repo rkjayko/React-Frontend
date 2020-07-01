@@ -1,27 +1,27 @@
 import axios from 'axios';
 
-const USER_API_BASE_URL = 'http://localhost:8080/api/announcements';
+const USER_API_BASE_URL = 'http://localhost:8080/api';
 
 class AnnouncementService {
 
     fetchAnnouncements() {
-        return axios.get(USER_API_BASE_URL);
+        return axios.get(USER_API_BASE_URL + '/announcements');
     }
 
-    fetchAnnouncementById(userId) {
-        return axios.get(USER_API_BASE_URL + '/' + userId);
+    fetchAnnouncementById(announcementId) {
+        return axios.get(USER_API_BASE_URL + '/announcement/' + announcementId);
     }
 
     deleteAnnouncement(userId) {
-        return axios.delete(USER_API_BASE_URL + '/' + userId);
+        return axios.delete(USER_API_BASE_URL  + '/announcement/' + userId);
     }
 
-    addAnnouncement(user) {
-        return axios.post(""+USER_API_BASE_URL, user);
+    addAnnouncement(announcement) {
+        return axios.post(""+USER_API_BASE_URL +  '/createannouncement' , announcement);
     }
 
-    editAnnouncement(user) {
-        return axios.put(USER_API_BASE_URL + '/' + user.id, user);
+    editAnnouncement(announcement) {
+        return axios.put(USER_API_BASE_URL  + '/editannouncement/'  + announcement.id);
     }
 
 }

@@ -21,7 +21,7 @@ const NavBar = () => {
                         PNC 2.0
                     </Typography>
                     <Button color="inherit" href="/add">Añadir Convocatoria</Button>
-                    <Button color="inherit" href="/add">Borrar Convocatoria</Button>
+                    <Button color="inherit" href="/announcements">Lista Convocatoria</Button>
                 </Toolbar>
             </AppBar>
         </div>

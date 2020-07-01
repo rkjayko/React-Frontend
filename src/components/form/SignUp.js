@@ -6,13 +6,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { Formik, Form } from 'formik';
-import * as yup from 'yup';
-import MenuItem from '@material-ui/core/MenuItem';
+import AddAnnouncementComponent from '../Announcement/AddAnnouncementComponent'
 import {
     MuiPickersUtilsProvider,
-    KeyboardTimePicker,
-    KeyboardDatePicker,
   } from '@material-ui/pickers';
   import DateFnsUtils from '@date-io/date-fns';
 
@@ -64,13 +60,9 @@ const SignUp = () => {
 
     const classes = useStyles();
     const [currency, setCurrency] = React.useState('JAVA');
-    const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
     const handleChange = (event) => {
         setCurrency(event.target.value);
       };
-      const handleDateChange = (date) => {
-        setSelectedDate(date);
-      };      
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -162,6 +154,7 @@ const SignUp = () => {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
+                        onClick={AddAnnouncementComponent.saveAnnouncement}
                     >
                         Agregar convocatoria
                     </Button>

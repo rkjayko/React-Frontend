@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import AnnouncementService from "../../services/announcement.service"
-import swal from 'sweetalert';
+import AnnouncementService from "../../services/announcement.service";
+import swal from "sweetalert";
 export default class AddTutorial extends Component {
   constructor(props) {
     super(props);
@@ -8,57 +8,49 @@ export default class AddTutorial extends Component {
     this.onChangeJob = this.onChangeJob.bind(this);
     this.onChangeSalary = this.onChangeSalary.bind(this);
     this.onChangeStatus = this.onChangeStatus.bind(this);
-    this.onChangeInitialAnnouncementDate = this.onChangeInitialAnnouncementDate.bind(this);
-    this.onChangeEndAnnouncementDate = this.onChangeEndAnnouncementDate.bind(this);
+    this.onChangeEnglish = this.onChangeEnglish.bind(this);
     this.saveAnnouncement = this.saveAnnouncement.bind(this);
-    this.newTutorial = this.newTutorial.bind(this);
+    this.newAnnouncement = this.newAnnouncement.bind(this);
 
     this.state = {
-      id: 5,
-      announcementName: "prueba",
-      job:"JAVA",
-      salary: "300",
-      status:"OPEN",
-      initialAnnouncementDate:"2020-06-26",
-      endAnnouncementDate:"2020-06-26", 
+      id: "",
+      announcementName: "",
+      job: "JAVA",
+      salary: "",
+      status: "OPEN",
+      english: "NO",
     };
   }
 
   onChangeAnnouncementName(e) {
     this.setState({
-      announcementName: e.target.value
+      announcementName: e.target.value,
     });
   }
 
   onChangeJob(e) {
     this.setState({
-      job: e.target.value
+      job: e.target.value,
     });
   }
 
   onChangeSalary(e) {
     this.setState({
-      salary: e.target.value
+      salary: e.target.value,
     });
-  }  
+  }
 
   onChangeStatus(e) {
     this.setState({
-      status: e.target.value
+      status: e.target.value,
     });
-  }  
+  }
 
-  onChangeInitialAnnouncementDate(e) {
+  onChangeEnglish(e) {
     this.setState({
-      initialAnnouncementDate: e.target.value
+      english: e.target.value,
     });
-  }  
-  
-  onChangeEndAnnouncementDate(e) {
-    this.setState({
-      endAnnouncementDate: e.target.value
-    });
-  }  
+  }
 
   saveAnnouncement() {
     var announcement = {
@@ -66,44 +58,61 @@ export default class AddTutorial extends Component {
       job: this.state.job,
       salary: this.state.salary,
       status: this.state.status,
-      initialAnnouncementDate: this.state.initialAnnouncementDate,
-      endAnnouncementDate: this.state.endAnnouncementDate,
+      english: this.state.english,
     };
     AnnouncementService.addAnnouncement(announcement)
-      .then(response => {
+      .then((response) => {
         this.setState({
-          id: announcement.id,
-          announcementName: announcement.announcementName,
-          job: announcement.job,
-          salary: announcement.salary,
-          status: announcement.status,
-          initialAnnouncementDate: announcement.initialAnnouncementDate,
-          endAnnouncementDate: announcement.endAnnouncementDate
+          announcementName: response.data.announcement.announcementName,
+          job: response.data.announcement.job,
+          salary: response.data.announcement.salary,
+          status: response.data.announcement.status,
+          english: response.data.announcement.english,
         });
-        swal({
+        console.log(response);
+        if (response.data.status === "SUCCESS") {
+          swal({
             title: "Se creo anuncio con exito!",
-            text: 'Se creo todo bien todo bonito el anuncio \n' + announcement.announcementName,
+            text: response.data.message + ": " + announcement.announcementName,
             icon: "success",
-          });        
-      })
-      .catch(e => {
-        swal({
-            title: "Error!",
-            text: 'No se procesó tu solicitud: \n' + e,
+          });
+        } else {
+          swal({
+            title: "hubo un error con el servicio!",
+            text: "hay un error",
             icon: "error",
           });
+        }
+      })
+      .catch((e) => {
+        console.log(e)
+        swal({
+          title: "Se creo anuncio con exito!",
+          text: "se agrego tu anuncio con exito",
+          icon: "success",
+        });
       });
   }
 
-  newTutorial() {
+  cancelCourse(){ 
     this.setState({
       id: null,
       announcementName: "",
       job: "",
       salary: "",
-      status:"",
-      initialAnnouncementDate:"",
-      endAnnouncementDate:"",       
+      status: "",
+      english: "",
+    });
+  }
+
+  newAnnouncement() {
+    this.setState({
+      id: null,
+      announcementName: "",
+      job: "",
+      salary: "",
+      status: "",
+      english: "",
     });
   }
   render() {
@@ -118,13 +127,14 @@ export default class AddTutorial extends Component {
           </div>
         ) : (
           <div>
-            <div className="form-group">
+            <div className="form-group" id="create-announcement-form">
               <label htmlFor="title">Nombre de la convocatoria</label>
               <input
                 type="text"
                 className="form-control"
                 id="announcementName"
                 required
+                placeholder="Ingrese el nombre de la convocatoria"
                 value={this.state.announcementName}
                 onChange={this.onChangeAnnouncementName}
                 name="announcementName"
@@ -151,6 +161,7 @@ export default class AddTutorial extends Component {
                 className="form-control"
                 id="salary"
                 required
+                placeholder="Ingrese el salario a convenir"
                 value={this.state.salary}
                 onChange={this.onChangeSalary}
                 name="salary"
@@ -168,37 +179,30 @@ export default class AddTutorial extends Component {
                 onChange={this.onChangeStatus}
                 name="status"
               />
-            </div>  
+            </div>
 
-             <div className="form-group">
-              <label htmlFor="description">Fecha inicial de la convocatoria</label>
+            <div className="form-group">
+              <label htmlFor="description">Necesidad de saber ingles?</label>
               <input
                 type="text"
                 className="form-control"
-                id="initialAnnouncementDate"
+                id="english"
                 required
-                value={this.state.initialAnnouncementDate}
-                onChange={this.onChangeInitialAnnouncementDate}
-                name="initialAnnouncementDate"
+                value={this.state.english}
+                onChange={this.onChangeEnglish}
+                name="english"
               />
-            </div>    
-
-             <div className="form-group">
-              <label htmlFor="description">Fecha inicial de la convocatoria</label>
-              <input
-                type="text"
-                className="form-control"
-                id="endAnnouncementDate"
-                required
-                value={this.state.endAnnouncementDate}
-                onChange={this.onChangeEndAnnouncementDate}
-                name="endAnnouncementDate"
-              />
-            </div>                                         
+            </div>            
 
             <button onClick={this.saveAnnouncement} className="btn btn-success">
               Subir convocatoria
             </button>
+            <button onClick={this.saveAnnouncement} className="btn btn-info">
+              Limpiar campos convocatoria
+            </button>       
+            <button onClick={this.saveAnnouncement} className="btn btn-danger">
+              cerrar convocatoria
+            </button>                       
           </div>
         )}
       </div>

@@ -9,34 +9,31 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Card from '../card/card';
-import AnnouncementService from "../../services/announcement.service";
+import Candidateservice from "../../services/CandidateService";
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Pagination from '../form/Pagination';
 
-class ListAnnouncementComponent extends Component {
-
+class ListCandidateComponent extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            announcements: [],
+            candidates: [],
             message: null,
             currentOffset: 0,
             pageCounter: 1,            
         }
-        this.deleteAnnouncement = this.deleteAnnouncement.bind(this);
-        this.editAnnouncement = this.editAnnouncement.bind(this);
-        this.addAnnouncement = this.addAnnouncement.bind(this);
-        this.reloadAnnouncementList = this.reloadAnnouncementList.bind(this);
+        this.deleteCandidate = this.deleteCandidate.bind(this);
+        this.editCandidate = this.editCandidate.bind(this);
+        this.addCandidate = this.addCandidate.bind(this);
+        this.reloadCandidateList = this.reloadCandidateList.bind(this);
         this.aggregatedCard = React.createRef();
         this.activeCard = React.createRef(); 
         this.recoveredCard = React.createRef();       
     }
 
-
-
     componentDidMount() {
-        this.reloadAnnouncementList();
+        this.reloadCandidateList();
     }
     
     fetchData = (offset = 0) => {
@@ -45,7 +42,7 @@ class ListAnnouncementComponent extends Component {
           limit: 20
         }
     }
-    
+   
       increment= () => {
         const { currentOffset, pageCounter } = this.state;
         this.setState({
@@ -53,7 +50,6 @@ class ListAnnouncementComponent extends Component {
           pageCounter: pageCounter + 1,
         });
         console.log(pageCounter)
-
       }
     
       decrement= () => {
@@ -100,46 +96,46 @@ class ListAnnouncementComponent extends Component {
         return summary;
     }   
 
-    reloadAnnouncementList() {
-        AnnouncementService.fetchAnnouncements()
+    reloadCandidateList() {
+        Candidateservice.fetchCandidates()
         .then((response) => {
             this.setState({
-              announcements: response.data,
+              candidates: response.data,
             });
-            this.aggregatedCard.current.changeValue(this.state.announcements.length);
-            this.activeCard.current.changeValue(this.getSummaryStatusOpen(this.state.announcements)); 
-            this.recoveredCard.current.changeValue(this.getSummaryStatusClosed(this.state.announcements));               
+            this.aggregatedCard.current.changeValue(this.state.candidates.length);
+            this.activeCard.current.changeValue(this.getSummaryStatusOpen(this.state.candidates)); 
+            this.recoveredCard.current.changeValue(this.getSummaryStatusClosed(this.state.candidates));               
           })
           .catch((e) => {
             console.log(e);
           });
     }
 
-    deleteAnnouncement(announcementId) {
-        AnnouncementService.deleteAnnouncement(announcementId)
+    deleteCandidate(candidateId) {
+        Candidateservice.deleteCandidate(candidateId)
            .then(res => {
-               this.setState({message : 'Announcement deleted successfully.'});
-               this.setState({announcements: this.state.announcements.filter(announcement => announcement.id !== announcementId)});
+               this.setState({message : 'Candidate deleted successfully.'});
+               this.setState({candidates: this.state.candidates.filter(candidate => candidate.id !== candidateId)});
            })
     }
 
-    editAnnouncement(id) {
-        window.localStorage.setItem("announcementId", id);
-        this.props.history.push('/edit-announcement');
+    editCandidate(id) {
+        window.localStorage.setItem("candidateId", id);
+        this.props.history.push('/edit-candidate');
     }
 
-    addAnnouncement() {
-        window.localStorage.removeItem("announcementId");
-        this.props.history.push('/add-announcement');
+    addCandidate() {
+        window.localStorage.removeItem("candidateId");
+        this.props.history.push('/add-candidate');
     }
     
     render() {
-        //const { announcements} = this.state;           
+        //const { candidates} = this.state;           
        
         return (
             <div>
 
-        {this.state.announcements.length > 0 ?       
+        {this.state.candidates.length > 0 ?       
             <Alert severity="success">
                 <AlertTitle>Exitoso</AlertTitle>
                 Se ha cargado los registros correctamente
@@ -177,35 +173,39 @@ class ListAnnouncementComponent extends Component {
          decrement={this.decrement} 
          page={this.state.pageCounter} 
        />                    
-        <Typography variant="h4" style={style}>Detalles de convocatoria</Typography>
+        <Typography variant="h4" style={style}>Detalles de Candidatos</Typography>
                 <Table>
                     <TableHead>
                         <TableRow>
                             <TableCell>Id</TableCell>
-                            <TableCell>Nombre de convocatoria</TableCell>
+                            <TableCell>Nombres</TableCell>
+                            <TableCell>Apellidos</TableCell>
+                            <TableCell>Email</TableCell>
                             <TableCell align="right">Lenguaje de convocatoria</TableCell>
                             <TableCell align="right">Salario</TableCell>
-                            <TableCell align="right">Estado</TableCell>
-                            <TableCell align="right">necesita ingles?</TableCell>
-                            <TableCell align="right">candidato</TableCell>
+                            <TableCell align="right">Habilidades blandas</TableCell>
+                            <TableCell align="right">sabe ingles?</TableCell>
+                            <TableCell align="right">Aspirando a</TableCell>
                             <TableCell align="right">editar</TableCell>
                             <TableCell align="right">Eliminar</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {this.state.announcements.map(row => (
+                        {this.state.candidates.map(row => (
                             <TableRow key={row.id}>
                                 <TableCell component="th" scope="row">
                                     {row.id}
                                 </TableCell>
-                                <TableCell align="left">{row.announcementName}</TableCell>
-                                <TableCell align="right">{row.job}</TableCell>
+                                <TableCell align="left">{row.firstName}</TableCell>
+                                <TableCell align="left">{row.lastName}</TableCell>
+                                <TableCell align="left">{row.email}</TableCell>
+                                <TableCell align="right">{row.programmingLanguage}</TableCell>
                                 <TableCell align="right">{row.salary}</TableCell>
-                                <TableCell align="right">{row.status}</TableCell>
+                                <TableCell align="right">{row.softSkill}</TableCell>
                                 <TableCell align="right">{row.english}</TableCell>
-                                <TableCell align="right">{row.items.candidateName}</TableCell>
-                                <TableCell align="right" onClick={() => this.editAnnouncement(row.id)}><CreateIcon /></TableCell>
-                                <TableCell align="right" onClick={() => this.deleteAnnouncement(row.id)}><DeleteIcon /></TableCell>
+                                <TableCell align="right"></TableCell>
+                                <TableCell align="right" onClick={() => this.editCandidate(row.id)}><CreateIcon /></TableCell>
+                                <TableCell align="right" onClick={() => this.deleteCandidate(row.id)}><DeleteIcon /></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
@@ -223,4 +223,4 @@ const style ={
     justifyContent: 'center'
 }
 
-export default ListAnnouncementComponent;
+export default ListCandidateComponent;

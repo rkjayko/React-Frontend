@@ -80,10 +80,8 @@ class EditAnnouncementComponent extends Component {
       });
     }  
 
-    saveAnnouncement = (e) => {
-        e.preventDefault();
-        let announcement = 
-        {id: this.state.id,
+    saveAnnouncement() {
+        var announcement = {
         announcementName: this.state.announcementName, 
         job: this.state.job, 
         salary: this.state.salary, 
@@ -94,14 +92,15 @@ class EditAnnouncementComponent extends Component {
         AnnouncementService.editAnnouncement(announcement)
         .then(response => {
           this.setState({
-            id: announcement.id,
-            announcementName: announcement.announcementName,
-            job: announcement.job,
-            salary: announcement.salary,
-            status: announcement.status,
-            initialAnnouncementDate: announcement.initialAnnouncementDate,
-            endAnnouncementDate: announcement.endAnnouncementDate
+            id: response.data.announcement.id,
+            announcementName: response.data.announcement.announcementName,
+            job: response.data.announcement.job,
+            salary: response.data.announcement.salary,
+            status: response.data.announcement.status,
+            initialAnnouncementDate: response.data.announcement.initialAnnouncementDate,
+            endAnnouncementDate: response.data.announcement.endAnnouncementDate
           });
+
           swal({
               title: "Se edito el anuncio con exito!",
               text: 'Se edito todo bien todo bonito el anuncio \n' + announcement.announcementName,
@@ -109,6 +108,8 @@ class EditAnnouncementComponent extends Component {
             });        
         })
         .catch(e => {
+          console.log(e)
+
           swal({
               title: "Error!",
               text: 'No se procesó tu solicitud: \n' + e,
@@ -179,33 +180,20 @@ class EditAnnouncementComponent extends Component {
                     onChange={this.onChangeStatus}
                     name="status"
                   />
-                </div>  
-    
-                 <div className="form-group">
-                  <label htmlFor="description">Fecha inicial de la convocatoria</label>
+                </div> 
+
+                <div className="form-group">
+                  <label htmlFor="description">Necesidad de saber ingles?</label>
                   <input
                     type="text"
                     className="form-control"
-                    id="initialAnnouncementDate"
+                    id="english"
                     required
-                    value={this.state.initialAnnouncementDate}
-                    onChange={this.onChangeInitialAnnouncementDate}
-                    name="initialAnnouncementDate"
+                    value={this.state.english}
+                    onChange={this.onChangeEnglish}
+                    name="english"
                   />
-                </div>    
-    
-                 <div className="form-group">
-                  <label htmlFor="description">Fecha inicial de la convocatoria</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="endAnnouncementDate"
-                    required
-                    value={this.state.endAnnouncementDate}
-                    onChange={this.onChangeEndAnnouncementDate}
-                    name="endAnnouncementDate"
-                  />
-                </div>                                         
+                </div>                                                            
     
                 <button onClick={this.saveAnnouncement} className="btn btn-success">
                   Subir convocatoria

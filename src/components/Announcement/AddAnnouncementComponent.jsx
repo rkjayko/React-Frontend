@@ -196,13 +196,7 @@ export default class AddTutorial extends Component {
 
             <button onClick={this.saveAnnouncement} className="btn btn-success">
               Subir convocatoria
-            </button>
-            <button onClick={this.saveAnnouncement} className="btn btn-info">
-              Limpiar campos convocatoria
-            </button>       
-            <button onClick={this.saveAnnouncement} className="btn btn-danger">
-              cerrar convocatoria
-            </button>                       
+            </button>                 
           </div>
         )}
       </div>

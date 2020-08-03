@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import AnnouncementService from "../../services/announcement.service";
+import AnnouncementService from "../../services/AnnouncementService";
 import swal from 'sweetalert';
 class EditAnnouncementComponent extends Component {
 
@@ -11,8 +11,7 @@ class EditAnnouncementComponent extends Component {
             job: "",
             salary: "",
             status:"",
-            initialAnnouncementDate:"",
-            endAnnouncementDate:"", 
+            english:""
         }
         this.saveAnnouncement = this.saveAnnouncement.bind(this);
         this.loadAnnouncement = this.loadAnnouncement.bind(this);
@@ -20,8 +19,7 @@ class EditAnnouncementComponent extends Component {
         this.onChangeJob = this.onChangeJob.bind(this);
         this.onChangeSalary = this.onChangeSalary.bind(this);
         this.onChangeStatus = this.onChangeStatus.bind(this);
-        this.onChangeInitialAnnouncementDate = this.onChangeInitialAnnouncementDate.bind(this);
-        this.onChangeEndAnnouncementDate = this.onChangeEndAnnouncementDate.bind(this);        
+        this.onChangeEnglish= this.onChangeEnglish.bind(this);       
     }
 
     componentDidMount() {
@@ -38,8 +36,7 @@ class EditAnnouncementComponent extends Component {
                 job: announcement.job,
                 salary: announcement.salary,
                 status:announcement.status,
-                initialAnnouncementDate:announcement.initialAnnouncementDate,
-                endAnnouncementDate:announcement.endAnnouncementDate, 
+                english:announcement.english,
                 })
             });
     }
@@ -67,27 +64,21 @@ class EditAnnouncementComponent extends Component {
         status: e.target.value
       });
     }  
-  
-    onChangeInitialAnnouncementDate(e) {
+
+    onChangeEnglish(e) {
       this.setState({
-        initialAnnouncementDate: e.target.value
-      });
-    }  
-    
-    onChangeEndAnnouncementDate(e) {
-      this.setState({
-        endAnnouncementDate: e.target.value
-      });
+        english: e.target.value,
+      });  
     }  
 
     saveAnnouncement() {
         var announcement = {
+        id: this.state.id,
         announcementName: this.state.announcementName, 
         job: this.state.job, 
         salary: this.state.salary, 
         status: this.state.status, 
-        initialAnnouncementDate: this.state.initialAnnouncementDate,
-        endAnnouncementDate: this.state.endAnnouncementDate,
+        english: this.state.english,
     };
         AnnouncementService.editAnnouncement(announcement)
         .then(response => {
@@ -97,8 +88,7 @@ class EditAnnouncementComponent extends Component {
             job: response.data.announcement.job,
             salary: response.data.announcement.salary,
             status: response.data.announcement.status,
-            initialAnnouncementDate: response.data.announcement.initialAnnouncementDate,
-            endAnnouncementDate: response.data.announcement.endAnnouncementDate
+            english: response.data.announcement.english,
           });
 
           swal({
@@ -121,14 +111,6 @@ class EditAnnouncementComponent extends Component {
     render() {
         return (
             <div className="submit-form">
-            {this.state.submitted ? (
-              <div>
-                <h4>Has ingresado una nueva convocatoria correctamente</h4>
-                <button className="btn btn-success" onClick={this.newTutorial}>
-                  Agregar Convocatoria
-                </button>
-              </div>
-            ) : (
               <div>
                 <div className="form-group">
                   <label htmlFor="title">Nombre de la convocatoria</label>
@@ -193,8 +175,7 @@ class EditAnnouncementComponent extends Component {
                     onChange={this.onChangeEnglish}
                     name="english"
                   />
-                </div>                                                            
-    
+                </div>                                                                
                 <button onClick={this.saveAnnouncement} className="btn btn-success">
                   Subir convocatoria
                 </button>

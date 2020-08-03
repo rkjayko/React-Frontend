@@ -13,7 +13,7 @@ const NavBar = () => {
             <AppBar position="static"  style={{ boxShadow: 'none'}}>
                 <Toolbar>
                     <Typography variant="h6" style={style} href="#">
-                        PNC 2.0
+                        Convocatorias Cidenet
                     </Typography>
                     <Button color="inherit" href="/announcements">Lista Convocatoria</Button>
                     <Button color="inherit" href="/add">Añadir Convocatoria</Button>

@@ -8,7 +8,6 @@ import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
 import "bootstrap/dist/css/bootstrap.min.css";
-import Card from '../card/card';
 import Candidateservice from "../../services/CandidateService";
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Pagination from '../form/Pagination';
@@ -26,10 +25,7 @@ class ListCandidateComponent extends Component {
         this.deleteCandidate = this.deleteCandidate.bind(this);
         this.editCandidate = this.editCandidate.bind(this);
         this.addCandidate = this.addCandidate.bind(this);
-        this.reloadCandidateList = this.reloadCandidateList.bind(this);
-        this.aggregatedCard = React.createRef();
-        this.activeCard = React.createRef(); 
-        this.recoveredCard = React.createRef();       
+        this.reloadCandidateList = this.reloadCandidateList.bind(this);    
     }
 
     componentDidMount() {
@@ -49,7 +45,6 @@ class ListCandidateComponent extends Component {
           currentOffset: currentOffset + 1,
           pageCounter: pageCounter + 1,
         });
-        console.log(pageCounter)
       }
     
       decrement= () => {
@@ -59,8 +54,6 @@ class ListCandidateComponent extends Component {
           currentOffset: currentOffset - 1,
           pageCounter: pageCounter - 1,
         });
-        console.log(pageCounter)
-
       }
     
     componentDidUpdate(prevState) {
@@ -101,10 +94,7 @@ class ListCandidateComponent extends Component {
         .then((response) => {
             this.setState({
               candidates: response.data,
-            });
-            this.aggregatedCard.current.changeValue(this.state.candidates.length);
-            this.activeCard.current.changeValue(this.getSummaryStatusOpen(this.state.candidates)); 
-            this.recoveredCard.current.changeValue(this.getSummaryStatusClosed(this.state.candidates));               
+            });            
           })
           .catch((e) => {
             console.log(e);
@@ -129,12 +119,9 @@ class ListCandidateComponent extends Component {
         this.props.history.push('/add-candidate');
     }
     
-    render() {
-        //const { candidates} = this.state;           
-       
+    render() {       
         return (
-            <div>
-
+        <div>
         {this.state.candidates.length > 0 ?       
             <Alert severity="success">
                 <AlertTitle>Exitoso</AlertTitle>
@@ -145,29 +132,6 @@ class ListCandidateComponent extends Component {
                 'No existen registros asociados/No se ha cargado la base de datos'                    
             </Alert>         
         }                 
-        {/* Cards */}
-        <div className="row col-12 mx-auto">
-          <Card 
-          ref={this.aggregatedCard}
-          title="Convocatorias agregadas" 
-          value={0}
-          color='#F9345E'/>
-          <Card 
-          ref={this.activeCard}
-          title="Convocatorias abiertas" 
-          value={0}
-          color='#FA6400'/>
-          <Card 
-          ref={this.recoveredCard}
-          title="Convocatorias finalizadas" 
-          value={0}
-          color='#1CB142'/>
-          <Card 
-          ref={this.deathsCard}
-          title="Ultima convocatoria" 
-          value={0}
-          color='#6236FF'/>
-        </div>
         <Pagination 
          increment={this.increment} 
          decrement={this.decrement} 

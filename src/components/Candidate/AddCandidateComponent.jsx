@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import CandidateService from '../../services/CandidateService'
+import CandidateService from "../../services/CandidateService";
 import swal from "sweetalert";
 
 export default class AddTutorial extends Component {
@@ -12,16 +12,16 @@ export default class AddTutorial extends Component {
     this.onChangeSalary = this.onChangeSalary.bind(this);
     this.onChangeSoftSkill = this.onChangeSoftSkill.bind(this);
     this.onChangeEnglish = this.onChangeEnglish.bind(this);
-    this.saveCandidate= this.saveCandidate.bind(this);
+    this.saveCandidate = this.saveCandidate.bind(this);
 
     this.state = {
       id: "",
-      firstName: "jaykin",
-      lastName: "hatakin",
-      email:"jdmejia@gmail.com",
+      firstName: "",
+      lastName: "",
+      email: "",
       programmingLanguage: "JAVA",
-      salary: "20000",
-      softSkill: "prueba",
+      salary: "",
+      softSkill: "",
       english: "YES",
     };
   }
@@ -36,7 +36,7 @@ export default class AddTutorial extends Component {
     this.setState({
       lastName: e.target.value,
     });
-  }  
+  }
 
   onChangeEmail(e) {
     this.setState({
@@ -58,8 +58,8 @@ export default class AddTutorial extends Component {
 
   onChangeSoftSkill(e) {
     this.setState({
-      softSkill:e.target.value,
-    })
+      softSkill: e.target.value,
+    });
   }
 
   onChangeEnglish(e) {
@@ -72,7 +72,7 @@ export default class AddTutorial extends Component {
     var candidate = {
       firstName: this.state.firstName,
       lastName: this.state.lastName,
-      email: this.state.email,               
+      email: this.state.email,
       programmingLanguage: this.state.programmingLanguage,
       salary: this.state.salary,
       softSkill: this.state.softSkill,
@@ -93,7 +93,7 @@ export default class AddTutorial extends Component {
         if (response.data.status === "SUCCESS") {
           swal({
             title: "Se ha creado candidato con exito!",
-            text: response.data.message + ": " + candidate.candidateName,
+            text: response.data.message + ": " + candidate.firstName,
             icon: "success",
           });
         } else {
@@ -105,116 +105,123 @@ export default class AddTutorial extends Component {
         }
       })
       .catch((e) => {
-        console.log(e)
+        console.log(e);
+        if (e === "Error: Request failed with status code 409") {              
+          swal({
+            title: "Se ha ingresado mal los datos",
+            text:
+              "verificar todos los datos y volver a intentar",
+            icon: "error",
+          });
+      } else {
         swal({
-          title: "Se ha creado candidato con exito",
-          text: "se agrego tu candidato con exito",
-          icon: "success",
+          title: "Ocurrio un error inesperado",
+          text:
+            "verificar todos los datos y volver a intentar",
+          icon: "error",
         });
+      }
       });
   }
 
   render() {
+    const isEnabled = this.state.firstName.length > 0 && this.state.lastName.length > 0 
+    && this.state.email.length > 0 && this.state.salary.length > 0 
+    && this.state.softSkill.length > 0;
     return (
       <div className="submit-form">
-          <div>            
-            <div className="form-group" id="create-announcement-form">
-              <label htmlFor="title">Nombre del candidato</label>
-              <input
-                type="text"
-                className="form-control"
-                id="firstName"
-                required
-                placeholder="Ingrese el nombre del candidato convocatoria"
-                value={this.state.firstName}
-                onChange={this.onChangeFirstName}
-                name="firstName"
-              />
-            </div>            
-
-            <div className="form-group" id="create-announcement-form">
-              <label htmlFor="title">Apellidos del candidato</label>
-              <input
-                type="text"
-                className="form-control"
-                id="lastName"
-                required
-                placeholder="Ingrese los apellido del candidato"
-                value={this.state.LastName}
-                onChange={this.onChangeLastName}
-                name="lastName"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="description">Email</label>
-              <input
-                type="text"
-                className="form-control"
-                id="email"
-                required
-                value={this.state.email}
-                onChange={this.onChangeEmail}
-                name="email"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="description">Lenguaje de programacion</label>
-              <input
-                type="text"
-                className="form-control"
-                id="job"
-                required
-                value={this.state.programmingLanguage}
-                onChange={this.onChangeProgrammingLanguage}
-                name="job"
-              />
-            </div>            
-
-            <div className="form-group">
-              <label htmlFor="description">Expectativa de salario</label>
-              <input
-                type="text"
-                className="form-control"
-                id="salary"
-                required
-                placeholder="Ingrese el salario esperado"
-                value={this.state.salary}
-                onChange={this.onChangeSalary}
-                name="salary"
-              />
-            </div>            
-
-            <div className="form-group">
-              <label htmlFor="description">Habilidades blandas</label>
-              <input
-                type="text"
-                className="form-control"
-                id="softskill"
-                required
-                value={this.state.softSkill}
-                onChange={this.onChangeSoftSkill}
-                name="softskill"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="description">Necesidad de saber ingles?</label>
-              <input
-                type="text"
-                className="form-control"
-                id="english"
-                required
-                value={this.state.english}
-                onChange={this.onChangeEnglish}
-                name="english"
-              />
-            </div>            
-
-            <button onClick={this.saveCandidate} className="btn btn-success">
-              Subir candidato
-            </button>                 
+        <div>
+          <div className="form-group" id="create-announcement-form">
+            <label htmlFor="title">Nombres del candidato</label>
+            <input
+              type="text"
+              className="form-control"
+              id="firstName"
+              required
+              placeholder="Ingrese el nombre del candidato "
+              value={this.state.firstName}
+              onChange={this.onChangeFirstName}
+              name="firstName"
+            />
           </div>
+
+          <div className="form-group">
+            <label htmlFor="title">Apellidos del candidato</label>
+            <input
+              type="text"
+              className="form-control"
+              id="lastName"
+              required
+              placeholder="Ingrese los apellido del candidato"
+              value={this.state.lastName}
+              onChange={this.onChangeLastName}
+              name="lastName"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="description">Email</label>
+            <input
+              type="email"
+              className="form-control"
+              id="email"
+              required
+              placeholder="Ingrese el correo del candidato"
+              value={this.state.email}
+              onChange={this.onChangeEmail}
+              name="email"
+            />
+          </div>
+
+          <div className="form-group">
+              <label htmlFor="job">Lenguaje de programacion esperado</label>
+              <select className="form-control" value={this.state.programmingLanguage} onChange={this.onChangeProgrammingLanguage}>
+              <option value="JAVA">JAVA</option>
+              <option value="PLSQL">PLSQL</option>
+              <option value="GROOVY">GROOVY</option>
+              <option value="SWIFT">SWIFT</option>
+              </select>
+            </div>
+
+          <div className="form-group">
+            <label htmlFor="description">Expectativa de salario</label>
+            <input
+              type="number"
+              className="form-control"
+              id="salary"
+              required
+              placeholder="Ingrese el salario esperado"
+              value={this.state.salary}
+              onChange={this.onChangeSalary}
+              name="salary"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="description">Habilidades blandas</label>
+            <textarea
+              type="textarea"
+              className="form-control"
+              id="softskill"
+              required
+              placeholder="Ingrese las habiidades basicas"
+              value={this.state.softSkill}
+              onChange={this.onChangeSoftSkill}
+              name="softskill"
+            />
+          </div>
+
+          <div className="form-group">
+              <label htmlFor="english">Necesidad de saber ingles</label>
+              <select className="form-control" value={this.state.english} onChange={this.onChangeEnglish}>
+              <option value="YES">YES</option>
+              <option value="NO">NO</option>
+              </select>
+          </div>
+
+          <button onClick={this.saveCandidate} button disabled={!isEnabled} className="btn btn-success">
+            Subir candidato
+          </button>
+        </div>
       </div>
     );
   }

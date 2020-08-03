@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import AnnouncementService from "../../services/announcement.service";
+import AnnouncementService from "../../services/AnnouncementService";
 import swal from "sweetalert";
-export default class AddTutorial extends Component {
+export default class AddAnnouncement extends Component {
   constructor(props) {
     super(props);
     this.onChangeAnnouncementName = this.onChangeAnnouncementName.bind(this);
@@ -10,7 +10,6 @@ export default class AddTutorial extends Component {
     this.onChangeStatus = this.onChangeStatus.bind(this);
     this.onChangeEnglish = this.onChangeEnglish.bind(this);
     this.saveAnnouncement = this.saveAnnouncement.bind(this);
-    this.newAnnouncement = this.newAnnouncement.bind(this);
 
     this.state = {
       id: "",
@@ -18,7 +17,7 @@ export default class AddTutorial extends Component {
       job: "JAVA",
       salary: "",
       status: "OPEN",
-      english: "NO",
+      english: "YES",
     };
   }
 
@@ -60,6 +59,7 @@ export default class AddTutorial extends Component {
       status: this.state.status,
       english: this.state.english,
     };
+    console.log(announcement)
     AnnouncementService.addAnnouncement(announcement)
       .then((response) => {
         this.setState({
@@ -69,11 +69,10 @@ export default class AddTutorial extends Component {
           status: response.data.announcement.status,
           english: response.data.announcement.english,
         });
-        console.log(response);
         if (response.data.status === "SUCCESS") {
           swal({
             title: "Se creo anuncio con exito!",
-            text: response.data.message + ": " + announcement.announcementName,
+            text: response.data.message,
             icon: "success",
           });
         } else {
@@ -93,39 +92,11 @@ export default class AddTutorial extends Component {
         });
       });
   }
-
-  cancelCourse(){ 
-    this.setState({
-      id: null,
-      announcementName: "",
-      job: "",
-      salary: "",
-      status: "",
-      english: "",
-    });
-  }
-
-  newAnnouncement() {
-    this.setState({
-      id: null,
-      announcementName: "",
-      job: "",
-      salary: "",
-      status: "",
-      english: "",
-    });
-  }
+  
   render() {
+    const isEnabled = this.state.announcementName.length > 0 && this.state.salary.length > 0;
     return (
       <div className="submit-form">
-        {this.state.submitted ? (
-          <div>
-            <h4>Has ingresado una nueva convocatoria correctamente</h4>
-            <button className="btn btn-success" onClick={this.newTutorial}>
-              Agregar Convocatoria
-            </button>
-          </div>
-        ) : (
           <div>
             <div className="form-group" id="create-announcement-form">
               <label htmlFor="title">Nombre de la convocatoria</label>
@@ -142,22 +113,19 @@ export default class AddTutorial extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="description">Lenguaje de programacion</label>
-              <input
-                type="text"
-                className="form-control"
-                id="job"
-                required
-                value={this.state.job}
-                onChange={this.onChangeJob}
-                name="job"
-              />
+              <label htmlFor="job">Lenguaje de programacion de la convocatoria</label>
+              <select className="form-control" value={this.state.job} onChange={this.onChangeJob}>
+              <option value="JAVA">JAVA</option>
+              <option value="PLSQL">PLSQL</option>
+              <option value="GROOVY">GROOVY</option>
+              <option value="SWIFT">SWIFT</option>
+              </select>
             </div>
 
             <div className="form-group">
               <label htmlFor="description">Salario a convenir</label>
               <input
-                type="text"
+                type="number"
                 className="form-control"
                 id="salary"
                 required
@@ -169,36 +137,25 @@ export default class AddTutorial extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="description">Estado de la convocatoria</label>
-              <input
-                type="text"
-                className="form-control"
-                id="status"
-                required
-                value={this.state.status}
-                onChange={this.onChangeStatus}
-                name="status"
-              />
+              <label htmlFor="status">Estado de la convocatoria</label>
+              <select className="form-control" value={this.state.status} onChange={this.onChangeStatus}>
+              <option value="OPEN">OPEN</option>
+              <option value="CLOSED">CLOSED</option>
+              </select>
             </div>
-
+            
             <div className="form-group">
-              <label htmlFor="description">Necesidad de saber ingles?</label>
-              <input
-                type="text"
-                className="form-control"
-                id="english"
-                required
-                value={this.state.english}
-                onChange={this.onChangeEnglish}
-                name="english"
-              />
-            </div>            
-
-            <button onClick={this.saveAnnouncement} className="btn btn-success">
+              <label htmlFor="english">Necesidad de saber ingles</label>
+              <select className="form-control" value={this.state.english} onChange={this.onChangeEnglish}>
+              <option value="YES">YES</option>
+              <option value="NO">NO</option>
+              </select>
+            </div>
+                    
+            <button onClick={this.saveAnnouncement} button disabled={!isEnabled} className="btn btn-success" >
               Subir convocatoria
             </button>                 
           </div>
-        )}
       </div>
     );
   }

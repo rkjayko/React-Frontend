@@ -13,9 +13,9 @@ export default class AddAnnouncement extends Component {
 
     this.state = {
       id: "",
-      announcementName: "",
+      announcementName: "prueba",
       job: "JAVA",
-      salary: "",
+      salary: "4000000",
       status: "OPEN",
       english: "YES",
     };
@@ -72,23 +72,22 @@ export default class AddAnnouncement extends Component {
         if (response.data.status === "SUCCESS") {
           swal({
             title: "Se creo anuncio con exito!",
-            text: response.data.message,
+            text: "prueba",
             icon: "success",
           });
         } else {
           swal({
             title: "hubo un error con el servicio!",
-            text: "hay un error",
+            text: "prueba",
             icon: "error",
           });
         }
       })
       .catch((e) => {
-        console.log(e)
         swal({
-          title: "Se creo anuncio con exito!",
-          text: "se agrego tu anuncio con exito",
-          icon: "success",
+          title: "hubo un error con el servicios!",
+          text: e.response.data.ERROR,
+          icon: "error",
         });
       });
   }
@@ -152,7 +151,7 @@ export default class AddAnnouncement extends Component {
               </select>
             </div>
                     
-            <button onClick={this.saveAnnouncement} button disabled={!isEnabled} className="btn btn-success" >
+            <button onClick={this.saveAnnouncement} button="true" disabled={!isEnabled} className="btn btn-success" >
               Subir convocatoria
             </button>                 
           </div>

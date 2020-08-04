@@ -17,7 +17,7 @@ class AnnouncementService {
     }
 
     addAnnouncement(announcement) {
-        return axios.post(USER_API_BASE_URL + '/createannouncement', announcement);
+       return axios.post(USER_API_BASE_URL + '/createannouncement', announcement) 
     }
 
     editAnnouncement(announcement) {

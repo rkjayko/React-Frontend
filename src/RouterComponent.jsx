@@ -4,6 +4,7 @@ import AddAnnouncementComponent from "../src/components/Announcement/AddAnnounce
 import EditAnnouncementComponent from "../src/components/Announcement/EditAnnouncementComponent";
 import ListCandidateComponent from "../src/components/Candidate/ListCandidateComponent";
 import AddCandidateComponent from "../src/components/Candidate/AddCandidateComponent";
+import EditCandidateComponent from "../src/components/Candidate/EditCandidateComponent";
 
 import React from "react";
 
@@ -18,6 +19,7 @@ const AppRouter = () => {
                         <Route path="/edit-announcement" component={EditAnnouncementComponent}/>
                         <Route path="/candidates" component={ListCandidateComponent}/>
                         <Route path="/add-candidate" component={AddCandidateComponent}/>
+                        <Route path="/edit-candidate" component={EditCandidateComponent}/>
                     </Switch>
             </Router>
         </div>

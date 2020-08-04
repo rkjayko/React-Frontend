@@ -11,6 +11,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Candidateservice from "../../services/CandidateService";
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Pagination from '../form/Pagination';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+
+
 
 class ListCandidateComponent extends Component {
 
@@ -118,8 +122,29 @@ class ListCandidateComponent extends Component {
         window.localStorage.removeItem("candidateId");
         this.props.history.push('/add-candidate');
     }
+ 
     
-    render() {       
+    
+    render() {   
+        
+        const StyledTableCell = withStyles((theme) => ({
+            head: {
+              backgroundColor: theme.palette.common.black,
+              color: theme.palette.common.white,
+            },
+            body: {
+              fontSize: 14,
+            },
+          }))(TableCell);
+          
+          const StyledTableRow = withStyles((theme) => ({
+            root: {
+              '&:nth-of-type(odd)': {
+                backgroundColor: theme.palette.action.hover,
+              },
+            },
+          }))(TableRow);
+
         return (
         <div>
         {this.state.candidates.length > 0 ?       
@@ -138,20 +163,20 @@ class ListCandidateComponent extends Component {
          page={this.state.pageCounter} 
        />                    
         <Typography variant="h4" style={style}>Detalles de Candidatos</Typography>
-                <Table>
+                <Table class="striped" component={Paper}>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Id</TableCell>
-                            <TableCell>Nombres</TableCell>
-                            <TableCell>Apellidos</TableCell>
-                            <TableCell>Email</TableCell>
-                            <TableCell align="right">Lenguaje de convocatoria</TableCell>
-                            <TableCell align="right">Salario</TableCell>
-                            <TableCell align="right">Habilidades blandas</TableCell>
-                            <TableCell align="right">sabe ingles?</TableCell>
-                            <TableCell align="right">Aspirando a</TableCell>
-                            <TableCell align="right">editar</TableCell>
-                            <TableCell align="right">Eliminar</TableCell>
+                            <StyledTableCell>Id</StyledTableCell>
+                            <StyledTableCell>Nombres</StyledTableCell>
+                            <StyledTableCell>Apellidos</StyledTableCell>
+                            <StyledTableCell>Email</StyledTableCell>
+                            <StyledTableCell align="right">Lenguaje de convocatoria</StyledTableCell>
+                            <StyledTableCell align="right">Salario</StyledTableCell>
+                            <StyledTableCell align="right">Habilidades blandas</StyledTableCell>
+                            <StyledTableCell align="right">sabe ingles?</StyledTableCell>
+                            <StyledTableCell align="right">Aspirando a</StyledTableCell>
+                            <StyledTableCell align="right">editar</StyledTableCell>
+                            <StyledTableCell align="right">Eliminar</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

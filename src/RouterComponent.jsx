@@ -5,6 +5,7 @@ import EditAnnouncementComponent from "../src/components/Announcement/EditAnnoun
 import ListCandidateComponent from "../src/components/Candidate/ListCandidateComponent";
 import AddCandidateComponent from "../src/components/Candidate/AddCandidateComponent";
 import EditCandidateComponent from "../src/components/Candidate/EditCandidateComponent";
+import ListStageComponent from "../src/components/Stage/ListStageComponent";
 
 import React from "react";
 
@@ -20,6 +21,7 @@ const AppRouter = () => {
                         <Route path="/candidates" component={ListCandidateComponent}/>
                         <Route path="/add-candidate" component={AddCandidateComponent}/>
                         <Route path="/edit-candidate" component={EditCandidateComponent}/>
+                        <Route path="/Stages" component={ListStageComponent}/>
                     </Switch>
             </Router>
         </div>

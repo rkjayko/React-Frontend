@@ -7,6 +7,7 @@ import { FaHeart} from 'react-icons/fa';
 
 function App() {
   return (   
+    
       <div>
           <NavBar/>
           <Container>

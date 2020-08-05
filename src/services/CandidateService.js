@@ -23,7 +23,6 @@ class CandidateService {
     editCandidate(candidate) {
         return axios.put(USER_API_BASE_URL + '/editcandidate/' + candidate.id);
     }
-
 }
 
 export default new CandidateService();

@@ -9,6 +9,7 @@ export default class AddAnnouncement extends Component {
     this.onChangeSalary = this.onChangeSalary.bind(this);
     this.onChangeStatus = this.onChangeStatus.bind(this);
     this.onChangeEnglish = this.onChangeEnglish.bind(this);
+    this.onChangeAnnouncementStages = this.onChangeAnnouncementStages.bind(this);
     this.saveAnnouncement = this.saveAnnouncement.bind(this);
 
     this.state = {
@@ -18,6 +19,10 @@ export default class AddAnnouncement extends Component {
       salary: "4000000",
       status: "OPEN",
       english: "YES",
+      announcementStages:{
+        id:1,
+        description:"prueba"
+      },
     };
   }
 
@@ -51,6 +56,12 @@ export default class AddAnnouncement extends Component {
     });
   }
 
+  onChangeAnnouncementStages(e) {
+    this.setState({
+      description: e.target.value,
+    });
+  }
+ 
   saveAnnouncement() {
     var announcement = {
       announcementName: this.state.announcementName,
@@ -58,6 +69,7 @@ export default class AddAnnouncement extends Component {
       salary: this.state.salary,
       status: this.state.status,
       english: this.state.english,
+      announcementStages: this.state.announcementStages,
     };
     console.log(announcement)
     AnnouncementService.addAnnouncement(announcement)
@@ -68,6 +80,7 @@ export default class AddAnnouncement extends Component {
           salary: response.data.announcement.salary,
           status: response.data.announcement.status,
           english: response.data.announcement.english,
+          description:response.data.announcement.announcementStages.description
         });
         if (response.data.status === "SUCCESS") {
           swal({
@@ -150,6 +163,17 @@ export default class AddAnnouncement extends Component {
               <option value="NO">NO</option>
               </select>
             </div>
+
+            <div className="form-group">
+              <label htmlFor="stage">seleccione las etapas que tendra la convocatoria</label>
+              <select multiple={true} value={this.state.announcementStages.description} onChange={this.onChangeAnnouncementStages} className="form-control" id="stage">
+                <option>Hoja de vida</option>
+                <option>Prueba tecnica</option>
+                <option>Entrevista</option>
+                <option>Prueba de ingles</option>
+                <option>otros</option>
+              </select>
+            </div>           
                     
             <button onClick={this.saveAnnouncement} button="true" disabled={!isEnabled} className="btn btn-success" >
               Subir convocatoria

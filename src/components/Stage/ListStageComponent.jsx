@@ -9,32 +9,31 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Card from '../card/card';
-import AnnouncementService from "../../services/AnnouncementService";
+import StageService from "../../services/StageService";
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Pagination from '../form/Pagination';
 import swal from "sweetalert";
 
-class ListAnnouncementComponent extends Component {
-
+class ListStageComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            announcements: [],
+            stages: [],
             message: null,
             currentOffset: 0,
             pageCounter: 1,            
         }
-        this.deleteAnnouncement = this.deleteAnnouncement.bind(this);
-        this.editAnnouncement = this.editAnnouncement.bind(this);
-        this.addAnnouncement = this.addAnnouncement.bind(this);
-        this.reloadAnnouncementList = this.reloadAnnouncementList.bind(this);
+        this.deleteStage = this.deleteStage.bind(this);
+        this.editStage = this.editStage.bind(this);
+        this.addStage = this.addStage.bind(this);
+        this.reloadStageList = this.reloadStageList.bind(this);
         this.aggregatedCard = React.createRef();
         this.activeCard = React.createRef(); 
         this.recoveredCard = React.createRef();       
     }
 
     componentDidMount() {
-        this.reloadAnnouncementList();
+        this.reloadStageList();
     }
     
     fetchData = (offset = 0) => {
@@ -93,48 +92,48 @@ class ListAnnouncementComponent extends Component {
         return summary;
     }   
 
-    reloadAnnouncementList() {
-        AnnouncementService.fetchAnnouncements()
+    reloadStageList() {
+        StageService.fetchStages()
         .then((response) => {
             this.setState({
-              announcements: response.data,
+              stages: response.data,
             });
-            this.aggregatedCard.current.changeValue(this.state.announcements.length);
-            this.activeCard.current.changeValue(this.getSummaryStatusOpen(this.state.announcements)); 
-            this.recoveredCard.current.changeValue(this.getSummaryStatusClosed(this.state.announcements));               
+            this.aggregatedCard.current.changeValue(this.state.stages.length);
+            this.activeCard.current.changeValue(this.getSummaryStatusOpen(this.state.stages)); 
+            this.recoveredCard.current.changeValue(this.getSummaryStatusClosed(this.state.stages));               
           })
           .catch((e) => {
             console.log(e);
           });
     }
 
-    deleteAnnouncement(announcementId) {
-        AnnouncementService.deleteAnnouncement(announcementId)
+    deleteStage(stageId) {
+        StageService.deleteStage(stageId)
            .then(res => {
                 swal({
                     title: "Se elimino anuncio con exito!",
                     text: res.data.message,
                     icon: "success",
                 });
-            this.setState({announcements: this.state.announcements.filter(announcement => announcement.id !== announcementId)});
-            this.reloadAnnouncementList()
+            this.setState({stages: this.state.stages.filter(stage => stage.id !== stageId)});
+            this.reloadStageList()
            })
     }
 
-    editAnnouncement(id) {
-        window.localStorage.setItem("announcementId", id);
-        this.props.history.push('/edit-announcement');
+    editStage(id) {
+        window.localStorage.setItem("stageId", id);
+        this.props.history.push('/edit-stage');
     }
 
-    addAnnouncement() {
-        window.localStorage.removeItem("announcementId");
-        this.props.history.push('/add-announcement');
+    addStage() {
+        window.localStorage.removeItem("stageId");
+        this.props.history.push('/add-stage');
     }
     
     render() {       
         return (
         <div>
-        {this.state.announcements.length > 0 ?       
+        {this.state.stages.length > 0 ?       
             <Alert severity="success">
                 <AlertTitle>Exitoso</AlertTitle>
                 Se ha cargado los registros correctamente
@@ -172,31 +171,21 @@ class ListAnnouncementComponent extends Component {
          decrement={this.decrement} 
          page={this.state.pageCounter} 
        />                    
-        <Typography variant="h4" style={style}>Detalles de convocatoria</Typography>
+        <Typography variant="h4" style={style}>Detalles de las etapas</Typography>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Nombre de convocatoria</TableCell>
-                            <TableCell align="right">Lenguaje de convocatoria</TableCell>
-                            <TableCell align="right">Salario</TableCell>
-                            <TableCell align="right">Estado</TableCell>
-                            <TableCell align="right">necesita ingles?</TableCell>
-                            <TableCell align="right">candidatos disponibles</TableCell>
+                            <TableCell>Nombre de la etapa</TableCell>
                             <TableCell align="right">editar</TableCell>
                             <TableCell align="right">Eliminar</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {this.state.announcements.map(row => (
+                        {this.state.stages.map(row => (
                             <TableRow key={row.id}>
-                                <TableCell align="left">{row.announcementName}</TableCell>
-                                <TableCell align="right">{row.job}</TableCell>
-                                <TableCell align="right">{row.salary}</TableCell>
-                                <TableCell align="right">{row.status}</TableCell>
-                                <TableCell align="right">{row.english}</TableCell>
-                                <TableCell align="right">{}</TableCell>
-                                <TableCell align="right" onClick={() => this.editAnnouncement(row.id)}><CreateIcon /></TableCell>
-                                <TableCell align="right" onClick={() => this.deleteAnnouncement(row.id)}><DeleteIcon /></TableCell>
+                                <TableCell align="left">{row.description}</TableCell>
+                                <TableCell align="right" onClick={() => this.editStage(row.id)}><CreateIcon /></TableCell>
+                                <TableCell align="right" onClick={() => this.deleteStage(row.id)}><DeleteIcon /></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
@@ -211,4 +200,4 @@ const style ={
     justifyContent: 'center'
 }
 
-export default ListAnnouncementComponent;
+export default ListStageComponent;

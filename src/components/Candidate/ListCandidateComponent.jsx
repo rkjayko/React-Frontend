@@ -14,8 +14,6 @@ import Pagination from '../form/Pagination';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 
-
-
 class ListCandidateComponent extends Component {
 
     constructor(props) {
